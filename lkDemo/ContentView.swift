@@ -51,22 +51,19 @@ class Solution {
     
     func lengthOfLongestSubstring(_ s: String) -> Int {
         var maxLength = 0
-        for i in 0..<s.count {
-            var subChars = [Character]()
-
-            for char in s[s.index(s.startIndex, offsetBy: i)...] {
-                if subChars.contains(char) {
-                    break
-                }
-                
-                subChars.append(char)
+        var currentSet = Set<Character>()
+        let chars = Array(s)
+        var left = 0
+        
+        for right in 0..<chars.count {
+            while currentSet.contains(chars[right]) {
+                currentSet.remove(chars[left])
+                left += 1
             }
             
-            maxLength = max(maxLength, subChars.count)
+            currentSet.insert(chars[right])
             
-            if s.count - i <= maxLength {
-                break
-            }
+            maxLength = max(currentSet.count, maxLength)
         }
         
         return maxLength
@@ -91,7 +88,7 @@ struct ContentView: View {
     func testText() -> String {
         let solution = Solution()
 
-        let maxLength = solution.lengthOfLongestSubstring("bbbbb")
+        let maxLength = solution.lengthOfLongestSubstring("abcabcbb")
         print(maxLength)
         
 //        let l1 = ListNode(2, ListNode(4, ListNode(3)))
@@ -110,7 +107,7 @@ struct ContentView: View {
         var result = solution.addTwoNumbers(l1, l2)
         print(result ?? 0)
         while result != nil {
-            print(result!.val)
+//            print(result!.val)
             result = result!.next
         }
         
