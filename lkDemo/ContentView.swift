@@ -68,6 +68,45 @@ class Solution {
         
         return maxLength
     }
+    
+    func findMedianSortedArrays(_ nums1: [Int], _ nums2: [Int]) -> Double {
+        let count = nums1.count + nums2.count
+        if count == 0 {
+            return 0
+        } else if (count == 1) {
+            return (nums1.count == 1) ? Double(nums1.first!) : Double(nums2.first!)
+        }
+
+        var results = [Int]()
+        var index1 = 0
+        var index2 = 0
+
+        for _ in 0..<(nums1.count + nums2.count) {
+            if index1 >= nums1.count {
+                results.append(nums2[index2])
+                index2 += 1
+            } else if (index2 >= nums2.count) {
+                results.append(nums1[index1])
+                index1 += 1
+            } else {
+                if (nums1[index1] < nums2[index2]) {
+                    results.append(nums1[index1])
+                    index1 += 1
+                } else {
+                    results.append(nums2[index2])
+                    index2 += 1
+                }
+            }
+        }
+        
+        if (results.count % 2 == 0) {
+            let index = results.count/2 - 1
+            return Double(results[index] + results[index + 1])/2.0
+        } else {
+            let index = (results.count - 1)/2
+            return Double(results[index])
+        }
+    }
 
 }
 
@@ -87,9 +126,12 @@ struct ContentView: View {
     
     func testText() -> String {
         let solution = Solution()
+        
+        let result = solution.findMedianSortedArrays([100000],[100001])
+        print(result)
 
-        let maxLength = solution.lengthOfLongestSubstring("abcabcbb")
-        print(maxLength)
+//        let maxLength = solution.lengthOfLongestSubstring("abcabcbb")
+//        print(maxLength)
         
 //        let l1 = ListNode(2, ListNode(4, ListNode(3)))
 //        let l2 = ListNode(5, ListNode(6, ListNode(4)))
@@ -102,14 +144,14 @@ struct ContentView: View {
 //            result = result!.next
 //        }
         
-        let l1 = ListNode(9, ListNode(9, ListNode(9, ListNode(9, ListNode(9, ListNode(9, ListNode(9)))))))
-        let l2 = ListNode(9, ListNode(9, ListNode(9, ListNode(9))))
-        var result = solution.addTwoNumbers(l1, l2)
-        print(result ?? 0)
-        while result != nil {
+//        let l1 = ListNode(9, ListNode(9, ListNode(9, ListNode(9, ListNode(9, ListNode(9, ListNode(9)))))))
+//        let l2 = ListNode(9, ListNode(9, ListNode(9, ListNode(9))))
+//        var result = solution.addTwoNumbers(l1, l2)
+//        print(result ?? 0)
+//        while result != nil {
 //            print(result!.val)
-            result = result!.next
-        }
+//            result = result!.next
+//        }
         
         return "test"
     }
